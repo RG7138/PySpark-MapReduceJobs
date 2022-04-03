@@ -1,0 +1,32 @@
+mutualfileread = sc.textFile("/FileStore/tables/mutual.txt").map(lambda line:line.split("\t"))
+#mutualfileread.take(5)
+#mutualfileread.map(lambda row:(row[0],row[1].split(",")))
+friendlist = mutualfileread.map(lambda row:(row[0],row[1].split(",")))
+
+#print(friendlist.take(5))
+
+
+def func(line):
+    #print(line[0])
+    newlst = []
+    if line[1]!='':
+        for i in line[1]:
+            if(i<line[0]):
+                newlst.append((i+","+line[0],line[1]))
+            else:
+                newlst.append((line[0]+","+i,line[1]))
+        return newlst
+    return ""
+
+friendpair = friendlist.flatMap(func)
+
+# for ele in friendpair.collect():
+#     print(ele)
+
+commons = friendpair.reduceByKey(lambda x,y:list(set(x).intersection(set(y))))
+
+commons.saveAsTextFile("/FileStorage/question/output2.txt")
+
+for i in commons.collect():
+    if i[0][0] !=",":
+         print(i[0]+"\t",len(i[1]))

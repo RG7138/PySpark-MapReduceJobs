@@ -1,0 +1,31 @@
+from operator import add
+
+business = sc.textFile("/FileStore/tables/business.csv").map(lambda x: x.split("::"))
+
+businessSQl = spark.createDataFrame(business).toDF("bussiness_id","full_address","categories")
+
+review = sc.textFile("/FileStore/tables/review.csv").map(lambda x: x.split("::")).map(lambda x:(x[2],x))
+
+reviewcount = review.map(lambda x:(x[0],1))
+
+count = reviewcount.reduceByKey(add)
+
+countSQL = spark.createDataFrame(count).toDF("bussiness_id","TotalRatingCount")
+# countSQL.show()
+countSQL.createOrReplaceTempView("RatingCount")
+
+temp= spark.sql("select * from RatingCount ORDER BY TotalRatingCount DESC")
+
+temptop10 = temp.take(10)
+
+top10 = spark.createDataFrame(temptop10).toDF("bussiness_id","TotalRatingCount")
+
+top10.show()
+
+top10.createOrReplaceTempView("top10")
+businessSQl.createOrReplaceTempView("business")
+
+output = spark.sql("select * from business NATURAL JOIN top10 ORDER BY TotalRatingCount DESC")
+
+for item in output.collect():
+    print(item)

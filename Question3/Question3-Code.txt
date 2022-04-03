@@ -1,0 +1,42 @@
+users = sc.textFile("/FileStore/tables/user.csv").map(lambda x:x.split("::"))
+# print(users.take(2))
+usersSQL = spark.createDataFrame(users).toDF("user_id","name","url")
+
+# usersSQL.show()
+
+# print(users.takeOrdered(2))
+
+bussiness = sc.textFile("/FileStore/tables/business.csv").map(lambda line:line.split("::"))
+
+def func(line):
+    if "Stanford" in line[1]:
+        return line
+
+stanbussiness = bussiness.map(func).filter(lambda x:x!=None)
+
+bussinessSQL = spark.createDataFrame(stanbussiness).toDF("business_id","full_address","categories")
+
+# bussinessSQL.show()
+# # print(stanbussiness.takeOrdered(2))
+
+reviews = sc.textFile("/FileStore/tables/review.csv").map(lambda x:x.split("::"))
+
+reviewsSQL = spark.createDataFrame(reviews).toDF("review_id","user_id","business_id","stars")
+
+# reviewsSQL.show()
+
+bussinessSQL.createOrReplaceTempView("bussiness")
+reviewsSQL.createOrReplaceTempView("reviews")
+usersSQL.createOrReplaceTempView("users")
+
+result1 = spark.sql("select * from bussiness NATURAL JOIN reviews")
+
+# result1.show()
+
+result1.createOrReplaceTempView("result1")
+
+result2 = spark.sql("select * from users NATURAL JOIN result1")
+
+# result2.show()
+
+result2.select("name","stars").show()

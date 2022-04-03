@@ -1,0 +1,25 @@
++------------+-----+
+|        name|stars|
++------------+-----+
+|   Nicole A.|  4.0|
+|   Nicole A.|  4.0|
+|  Brandon M.|  4.0|
+|  Brandon M.|  4.0|
+|      Amy W.|  3.0|
+|      Amy W.|  3.0|
+|   Lauren W.|  4.0|
+|   Lauren W.|  4.0|
+|     Tara T.|  3.0|
+|     Tara T.|  3.0|
+|    Nyyca M.|  1.0|
+|    Nyyca M.|  1.0|
+|      Jae M.|  1.0|
+|      Jae M.|  1.0|
+|     Rick B.|  4.0|
+|     Rick B.|  4.0|
+|Christina P.|  4.0|
+|Christina P.|  4.0|
+|    Heidi M.|  3.0|
+|    Heidi M.|  3.0|
++------------+-----+
+only showing top 20 rows

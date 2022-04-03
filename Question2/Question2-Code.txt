@@ -1,0 +1,33 @@
+mutualfriendcount = sc.textFile("/FileStorage/question2/output1.txt").map(lambda line:line.split("\t"))
+#print(mutualfriendcount.takeOrdered(100))
+
+sum = 0
+dict = {}
+
+
+for i in mutualfriendcount.collect():
+     #print(i)
+    i[0] = i[0].replace("(","")
+    i[0] = i[0].replace(")","")
+    i[0] = i[0].replace("'","")
+    #print(i[0])
+    tmp = i[0].split(", ")
+    #print(len(tmp))
+    if(tmp[1]!=""):
+        dict[tmp[0]] = int(tmp[1])
+        sum = sum + int(tmp[1])
+    
+avg = int(sum/mutualfriendcount.count())
+#print(avg)
+#print(dict)
+
+for key in dict.keys():
+    if(dict[key] > avg):
+        print(key,dict[key]);
+
+
+
+
+    
+    
+       

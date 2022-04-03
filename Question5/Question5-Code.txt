@@ -1,0 +1,53 @@
+from operator import add 
+
+review = sc.textFile("/FileStore/tables/review.csv").map(lambda line:line.split("::"))
+
+# print(review.take(5))
+
+review1 = review.map(lambda line:[line[1],line[0],line[2],line[3]])
+
+review1 = review1.filter(lambda line : line!=None)
+
+print(review1.count())
+
+# review1.take(5)
+
+count = review1.count()
+
+# print(count)
+
+temp = review1.map(lambda line:[line[0],1])
+
+# print(temp.count())
+
+reduced = temp.reduceByKey(add)
+
+Intermoutput = reduced.map(lambda line:[line[0],str(round(((line[1]/count)*100),4))])
+
+sqltab = spark.createDataFrame(Intermoutput).toDF("user_id","contribution[%]")
+
+sqltab.createOrReplaceTempView("table1")
+
+least10query = spark.sql("select * from table1 order by `contribution[%]` asc")
+
+least10 = least10query.take(10)
+
+
+
+output = spark.createDataFrame(least10).toDF("user_id","contribution[%]")
+
+output.show()
+
+output.createOrReplaceTempView("least10")
+
+users = sc.textFile("/FileStore/tables/user.csv").map(lambda x:x.split("::"))
+
+userSQL = spark.createDataFrame(users).toDF("user_id","name","url")
+
+userSQL.show()
+
+userSQL.createOrReplaceTempView("users")
+
+Joined = spark.sql("select `name`,`contribution[%]` from users NATURAL JOIN least10")
+
+Joined.show()

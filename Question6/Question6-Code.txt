@@ -1,0 +1,68 @@
+from pyspark.mllib.linalg import Matrices
+from pyspark.sql import SparkSession
+from pyspark.mllib.linalg.distributed import RowMatrix
+
+lst = []
+mat1lst = []
+mat1read = sc.textFile("/FileStore/tables/matrix1.txt")
+
+rowcount=0;
+rowlst = []
+
+for item in mat1read.collect():
+   
+    ele = item.split(" ")
+    
+    ele = ele[0:len(ele)-1]
+#     mat1col = len(ele)
+    
+    for i in ele:
+        lst = lst + [i];
+    
+    mat1lst = mat1lst + [lst]
+    rowlst = rowlst + [rowcount]
+    lst = []
+    rowcount = rowcount+1
+    
+    
+# print("MAT1-")
+# print(mat1rows,mat1col)
+
+# Creating a list of tuple ------>>> [(0,[...]),(1,[...])....]
+data = list(zip(rowlst,mat1lst))
+
+indexedRows = sc.parallelize(data)    
+
+mat1 = IndexedRowMatrix(indexedRows)
+
+lst = []
+mat2lst = []
+mat2read = sc.textFile("/FileStore/tables/matrix2.txt")
+mat2rows = mat2read.count()
+mat2col = 0
+
+for item in mat2read.collect():
+    ele = item.split(" ")
+    
+    ele = ele[0:len(ele)-1]
+    mat2col = len(ele)
+    for i in ele:
+        mat2lst = mat2lst + [i];
+
+
+# print(mat2lst)
+        
+# print("MAT1-")
+# print(mat2rows,mat2col)
+
+mat2 = Matrices.dense(mat2col,mat2rows,mat2lst)
+
+output = mat1.multiply(mat2)
+
+rowMat = output.toRowMatrix()
+
+rowsRDD = rowMat.rows
+
+for item in rowsRDD.collect():
+    print(item)
+
