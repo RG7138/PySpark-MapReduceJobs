@@ -114,4 +114,4 @@ What to submit
 	
 	
 	
-NOTE - the coed has been written in python and executed on DATABRICKS
+NOTE - the code has been written in PYTHON and executed on DATABRICKS
