@@ -91,9 +91,13 @@ Find names of top 10 users who have the least contribution in the reviews. The
 contribution is measured by the percentage of the total reviews that a particular user
 gave.
 For example:
+  
 +-----------------+----------------+
+	
 |name |contribution|
+	
 +-----------------+----------------+
+	
 | John Snow |22% |
   
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
