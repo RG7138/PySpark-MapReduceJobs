@@ -1,8 +1,8 @@
-CS6350 Spring 2022
+#CS6350 Spring 2022
 Homework #3
 Submission Deadline: 11:59 pm, March 27th
-In this homework, you will use spark (pyspark or scala) to solve the following
-problems.
+
+In this homework, you will use spark (pyspark or scala) to solve the following problems.
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Q1:
 Write a spark script to find total number of common friends for any possible friend pairs.
@@ -76,8 +76,10 @@ This will require you to use all three files.
 Sample output:
 
 Username Rating
+
 John Snow 4.0
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Q4:
 List the business_ID, full address, and categories of the Top 10 businesses having the
 greatest number of ratings.
@@ -85,6 +87,7 @@ This will require you to use review.csv and business.csv files.
 Sample output:
 business id full address categories no. of ratings
 xdf12344444444 CA 91711 List ['Local Services', 'Carpet Cleaning'] 50
+	
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Q5:
 Find names of top 10 users who have the least contribution in the reviews. The
